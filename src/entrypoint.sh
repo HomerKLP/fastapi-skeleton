@@ -13,7 +13,7 @@ wait_for () {
 populate_env_variables () {
   if [ -f .env ]
   then
-    export $(cat .env | sed 's/#.*//g' | xargs)
+    export "$(cat .env | sed 's/#.*//g' | xargs)"
   fi
   echo "env variables are populated!"
 }
@@ -25,7 +25,6 @@ case "$PROCESS" in
     && black . --check && mypy . && flake8 . && bandit -r . --exclude tests && safety check
     ;;
 "DEV")
-#    wait_for "${DB_HOST}" "${DB_PORT}"
     uvicorn main:app --reload --host 0.0.0.0
     ;;
 "TEST")
@@ -35,7 +34,6 @@ case "$PROCESS" in
     -W ignore::ResourceWarning
     ;;
 "PROD")
-    wait_for "${DB_HOST}" "${DB_PORT}"
     python manage.py collectstatic --noinput && python manage.py migrate
     gunicorn -c gunicorn.py main:app
     ;;

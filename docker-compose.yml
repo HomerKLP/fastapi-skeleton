@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  fastapi:
+    container_name: fastapi
+    build: ./
+    volumes:
+      - ./src:/src:rw
+    depends_on:
+      - postgres
+    ports:
+      - 8000:8000
+    environment:
+      PROCESS: DEV
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.4-alpine
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    logging:
+      driver: none
+    ports:
+      - 5432:5432

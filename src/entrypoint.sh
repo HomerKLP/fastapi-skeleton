@@ -24,28 +24,20 @@ case "$PROCESS" in
     python manage.py migrate \
     && black . --check && mypy . && flake8 . && bandit -r . --exclude tests && safety check
     ;;
-"DEV_DJANGO")
-    wait_for "${DB_HOST}" "${DB_PORT}"
-    wait_for "${BROKER_HOST}" "${BROKER_PORT}"
-    python manage.py migrate && python manage.py runserver 0.0.0.0:8000
-    ;;
-"DEV_CELERY")
-    wait_for "${DB_HOST}" "${DB_PORT}"
-    wait_for "${BROKER_HOST}" "${BROKER_PORT}"
-    celery -A core worker -B --loglevel=INFO --concurrency=1
+"DEV")
+#    wait_for "${DB_HOST}" "${DB_PORT}"
+    uvicorn main:app --reload --host 0.0.0.0
     ;;
 "TEST")
     wait_for "${DB_HOST}" "${DB_PORT}"
-    wait_for "${BROKER_HOST}" "${BROKER_PORT}"
     pytest -v --cov . --cov-report term-missing --cov-fail-under=100 \
     --color=yes -n 4 --no-migrations --reuse-db -W error \
     -W ignore::ResourceWarning
     ;;
-"DJANGO")
+"PROD")
     wait_for "${DB_HOST}" "${DB_PORT}"
-    wait_for "${BROKER_HOST}" "${BROKER_PORT}"
     python manage.py collectstatic --noinput && python manage.py migrate
-    gunicorn -c core/gunicorn.py core.wsgi
+    gunicorn -c gunicorn.py main:app
     ;;
 *)
     echo "NO PROCESS SPECIFIED!"

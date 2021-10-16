@@ -1,6 +1,8 @@
 -- upgrade --
 CREATE TABLE IF NOT EXISTS "user" (
     "id" SERIAL NOT NULL PRIMARY KEY,
+    "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "username" VARCHAR(64) NOT NULL UNIQUE,
     "first_name" VARCHAR(64),
     "last_name" VARCHAR(64),

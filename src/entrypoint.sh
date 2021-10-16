@@ -25,6 +25,7 @@ case "$PROCESS" in
     && black . --check && mypy . && flake8 . && bandit -r . --exclude tests && safety check
     ;;
 "DEV")
+    aerich upgrade
     uvicorn main:app --reload --host 0.0.0.0
     ;;
 "TEST")

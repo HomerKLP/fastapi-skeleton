@@ -35,9 +35,7 @@ async def drop_database(db_name: str) -> None:
     """Close all connections and drop db"""
     await Tortoise.close_connections()
     conn = await asyncpg.connect(dsn=settings.db_uri)
-    await conn.execute(
-        f'DROP DATABASE "{db_name}"'
-    )
+    await conn.execute(f'DROP DATABASE "{db_name}"')
     await conn.close()
 
 

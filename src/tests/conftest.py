@@ -3,15 +3,15 @@ from copy import copy
 from urllib.parse import urlparse
 from uuid import uuid4
 
-import pytest
 import asyncpg
-
+import pytest
 from tortoise import Tortoise
 
 from core import config, settings
 
 
 async def init_test_db() -> str:
+    """Init test db for Tortoise"""
     conn = await asyncpg.connect(dsn=settings.db_uri)
 
     db_name = f"test_{str(uuid4())}"
@@ -34,6 +34,7 @@ async def init_test_db() -> str:
 
 
 async def drop_database(db_name: str) -> None:
+    """Close all connections and drop db"""
     await Tortoise.close_connections()
     conn = await asyncpg.connect(dsn=settings.db_uri)
     await conn.execute(

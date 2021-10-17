@@ -14,3 +14,8 @@ def test(c):
 @task
 def black(c):
     c.run("black .", pty=True)
+
+
+@task
+def flake(c):
+    c.run("flake8", pty=True)

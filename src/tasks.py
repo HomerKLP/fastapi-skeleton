@@ -8,4 +8,9 @@ def outdated(c):
 
 @task
 def test(c):
-    c.run("pytest -v --cov && flake8", pty=True)
+    c.run("pytest -v --cov && flake8 && black . --check", pty=True)
+
+
+@task
+def black(c):
+    c.run("black .", pty=True)

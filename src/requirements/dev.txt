@@ -3,3 +3,4 @@ requests
 flake8
 invoke
 pytest-cov
+black

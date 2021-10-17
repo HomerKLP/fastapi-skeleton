@@ -15,18 +15,16 @@ async def init_test_db() -> str:
     conn = await asyncpg.connect(dsn=settings.db_uri)
 
     db_name = f"test_{str(uuid4())}"
-    await conn.execute(
-        f'CREATE DATABASE "{db_name}"'
-    )
+    await conn.execute(f'CREATE DATABASE "{db_name}"')
     await conn.close()
 
     config_ = copy(config.TORTOISE_ORM)
-    old_url = urlparse(config_['connections']['default'])
+    old_url = urlparse(config_["connections"]["default"])
     new_db_url = (
         f"{old_url.scheme}://{old_url.username}:{old_url.password}"
         f"@{old_url.hostname}:{old_url.port or 5432}/{db_name}"
     )
-    config_['connections']['default'] = new_db_url
+    config_["connections"]["default"] = new_db_url
     await Tortoise.init(config=config_)
     await Tortoise.generate_schemas(safe=False)
 
@@ -43,7 +41,7 @@ async def drop_database(db_name: str) -> None:
     await conn.close()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def loop():
     loop = asyncio.get_event_loop()
     yield loop

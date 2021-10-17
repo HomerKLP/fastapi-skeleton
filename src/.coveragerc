@@ -1,0 +1,12 @@
+[run]
+omit =
+    tests/*
+    tasks.py
+    core/config.py
+    core/shutdown.py
+    core/startup.py
+    main.py
+
+[report]
+fail_under = 100
+show_missing = True

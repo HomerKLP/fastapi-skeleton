@@ -13,3 +13,4 @@ async def test_create_user() -> None:
     }
     user = await User.create(**data)
     assert user
+    assert str(user) == 'username'

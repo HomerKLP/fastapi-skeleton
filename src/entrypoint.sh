@@ -20,22 +20,17 @@ populate_env_variables () {
 populate_env_variables
 case "$PROCESS" in
 "LINT")
-    wait_for "${DB_HOST}" "${DB_PORT}"
-    python manage.py migrate \
-    && black . --check && mypy . && flake8 . && bandit -r . --exclude tests && safety check
+    black . --check && flake8 .
     ;;
 "DEV")
     aerich upgrade
     uvicorn main:app --reload --host 0.0.0.0
     ;;
 "TEST")
-    wait_for "${DB_HOST}" "${DB_PORT}"
-    pytest -v --cov . --cov-report term-missing --cov-fail-under=100 \
-    --color=yes -n 4 --no-migrations --reuse-db -W error \
-    -W ignore::ResourceWarning
+    pytest -v --cov
     ;;
 "PROD")
-    python manage.py collectstatic --noinput && python manage.py migrate
+    aerich upgrade
     gunicorn -c gunicorn.py main:app
     ;;
 *)

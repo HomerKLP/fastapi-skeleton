@@ -1,2 +1,51 @@
+[tool.poetry]
+name = "mederi"
+version = "0.1.0"
+description = ""
+authors = ["Temirlan Shablin <t_shablin@wargaming.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.97.0"
+gunicorn = "^20.1.0"
+uvicorn = "^0.22.0"
+asyncpg = "^0.27.0"
+sqlalchemy = "^2.0.16"
+alembic = "^1.11.1"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^23.3.0"
+flake8-pyproject = "^1.2.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 100
+max-complexity = 4
+show-source = true
+statistics = true
+count = true
+exclude = [
+    "dist",
+    "ci",
+    "venv",
+    ".git",
+    ".pyc",
+    ".venv",
+    "poetry.*",
+    "__pycache__",
+    "migrations",
+]
+
 [tool.black]
-line-length = 79
+line-length = 100
+extend-exclude = '''
+/(
+  ^/gunicorn.py
+  | migrations
+)/
+'''

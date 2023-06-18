@@ -1,26 +1,57 @@
-version: '3.7'
+version: '3.9'
 
 services:
-  fastapi:
-    container_name: fastapi
-    build: ./
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ci/Dockerfile
     volumes:
-      - ./src:/src:rw
-    depends_on:
-      - postgres
+      - ./src:/app/src
     ports:
-      - 8000:8000
+      - "8000:8000"
+    env_file: ./src/.env
     environment:
-      PROCESS: DEV
+      MODE: dev
+    healthcheck:
+      test: "curl --fail localhost:8000/api/ping || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      maintenance:
+        condition: service_healthy
+
+  maintenance:
+    container_name: maintenance
+    build:
+      context: .
+      dockerfile: ci/Dockerfile
+    env_file: ./src/.env
+    environment:
+      MODE: migrate
+    volumes:
+      - ./src:/app/src
+    healthcheck:
+      test: "[ -f /migrations_done ] || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   postgres:
     container_name: postgres
-    image: postgres:13.4-alpine
+    image: postgres:15.3-bullseye
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-    logging:
-      driver: none
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 5s
+      timeout: 3s
+      retries: 5
     ports:
-      - 5432:5432
+      - "5432:5432"

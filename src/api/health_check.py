@@ -3,6 +3,6 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/api/ping")
 async def health_check():
-    return "ok"
+    return "pong"

@@ -538,6 +538,17 @@ files = [
 ]
 
 [[package]]
+name = "python-json-logger"
+version = "2.0.7"
+description = "A python library adding a json log formatter"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "python-json-logger-2.0.7.tar.gz", hash = "sha256:23e7ec02d34237c5aa1e29a070193a4ea87583bb4e7f8fd06d3de8264c4b2e1c"},
+    {file = "python_json_logger-2.0.7-py3-none-any.whl", hash = "sha256:f380b826a991ebbe3de4d897aeec42760035ac760345e57b812938dc8b35e2bd"},
+]
+
+[[package]]
 name = "setuptools"
 version = "67.8.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -691,4 +702,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "9c945e03ac6625adfc28a7b965b265fe52cab83f4e94fb9edd7981faa8fbc7e8"
+content-hash = "0b7f41b7e429c1795831781a479b38a03676f2954d81cf4be20355e6f34a4efc"
